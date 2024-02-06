@@ -1,6 +1,7 @@
 #cloud-config
 hostname: ros2dev
 manage_etc_hosts: true
+locale: 'en_US.UTF-8'
 package_update: true
 package_upgrade: true
 
@@ -18,11 +19,15 @@ packages:
 - gpg
 - locales
 - python3-pip
-- ros-desktop
-# or
-# - ros-base
-# or 
-# - ros-core
+- raspi-config
+- lxde
+- lxdm
+- task-lxde-desktop
+- ubuntu-desktop-minimal
+- software-properties-common
+- ros-dev-tools
+- ros-iron-ros-base
+# - ros-iron-desktop-full
 apt:
   preserve_sources_list: true
   sources:
@@ -76,6 +81,8 @@ timezone: Pacific/Auckland
 runcmd:
 - localectl set-x11-keymap "us" pc105
 - setupcon -k --force || true
+- systemctl isolate multi-user.target 
+- rosdep init
 
 power_state:
   delay: 10
